@@ -1,8 +1,8 @@
+import argparse
 import asyncio
 from importlib import reload
 
 from bot2 import bot2
-import sc2
 from sc2 import Race
 from sc2.client import Client
 from sc2.main import _play_game
@@ -21,7 +21,6 @@ async def _join_game_aiter(players, realtime, portconfig):
         while True:
             await server.ping()
 
-            # client = await _setup_host_game(server, map_settings, players, realtime)
             client = Client(server._ws)
 
             try:
@@ -44,10 +43,13 @@ def _join_game_iter(*args, **kwargs):
 
 
 def main():
-    portconfig = Portconfig.from_json('{"shared": 19109, "server": [15209, 16543], "players": [[16701, 19105], [21041, 18319]]}')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("port_config")
+    args = parser.parse_args()
+
+    portconfig = Portconfig.from_json(args.port_config)
+
     player_config = [
-        # Bot(Race.Zerg, bot_ai.Bot2()),
-        # Computer(Race.Terran, Difficulty.Medium)
         Bot(Race.Terran, None),
         Bot(Race.Zerg, bot2.Bot2())
     ]
@@ -63,8 +65,6 @@ def main():
         reload(bot2)
         player_config[0].ai = bot2.Bot2()
         gen.send(player_config)
-
-
 
 
 if __name__ == "__main__":
