@@ -1,16 +1,14 @@
 from importlib import reload
 
 import sc2
-from bot import bot as bot_ai
+from bot1 import bot1 as bot_ai
 from sc2 import Race, Difficulty
 from sc2.player import Bot, Computer
-
-bot = Bot(Race.Terran, bot_ai.Bot())
 
 
 def main():
     player_config = [
-        Bot(Race.Zerg, bot_ai.Bot()),
+        Bot(Race.Zerg, bot_ai.Bot1()),
         Computer(Race.Terran, Difficulty.Medium)
     ]
 
@@ -23,8 +21,9 @@ def main():
     while True:
         r = next(gen)
         reload(bot_ai)
-        player_config[0].ai = bot_ai.Bot()
+        player_config[0].ai = bot_ai.Bot1()
         gen.send(player_config)
+
 
 if __name__ == "__main__":
     main()

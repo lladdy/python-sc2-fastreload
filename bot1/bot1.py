@@ -1,7 +1,7 @@
 import sc2
 
 
-class Bot(sc2.BotAI):
+class Bot1(sc2.BotAI):
 
     async def on_start(self):
         print('on_start')
